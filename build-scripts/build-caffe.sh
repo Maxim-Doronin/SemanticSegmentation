@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd ..
 ROOT_DIR=$(pwd)
 DEPS_DIR=$ROOT_DIR/deps
 SRC_DIR=$ROOT_DIR/deps/src

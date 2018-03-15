@@ -17,3 +17,5 @@ export PATH=$PATH:$BIN_DIR
 
 # HDF5-specific flag for UNN cluster file system.
 export HDF5_USE_FILE_LOCKING=FALSE
+
+export PYTHONPATH=$PYTHONPATH:$ROOT_DIR/caffe/python:$DEPS_DIR/python

@@ -21,7 +21,7 @@ source export-flags.sh
 ########################   DOWNLOAD AND UNZIP STEP   #########################
 ##############################################################################
 
-./download-and-unzip-deps.sh
+#./download-and-unzip-deps.sh
 
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
@@ -35,7 +35,7 @@ fi
 ##############################################################################
 
 echo "################   Build CMake   ################"
-./build-scripts/build-cmake.sh
+#./build-scripts/build-cmake.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -44,7 +44,7 @@ then
 fi
 
 echo "################   Build ATLAS   ################"
-./build-scripts/build-atlas.sh
+#./build-scripts/build-atlas.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -54,7 +54,7 @@ fi
 export LIBS="$LIBS -latlas -lcblas"
 
 echo "################   Build hdf5   ################"
-./build-scripts/build-hdf5.sh
+#./build-scripts/build-hdf5.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -64,7 +64,7 @@ fi
 export LIBS="$LIBS -lhdf5 -lhdf5_hl"
 
 echo "################   Build lmdb   ################"
-./build-scripts/build-lmdb.sh
+#./build-scripts/build-lmdb.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -74,7 +74,7 @@ fi
 export LIBS="$LIBS -llmdb"
 
 echo "################   Build snappy   ################"
-./build-scripts/build-snappy.sh
+#./build-scripts/build-snappy.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -84,7 +84,7 @@ fi
 export LIBS="$LIBS -lsnappy"
 
 echo "################   Build levedb   ################"
-./build-scripts/build-leveldb.sh
+#./build-scripts/build-leveldb.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -94,7 +94,7 @@ fi
 export LIBS="$LIBS -lleveldb"
 
 echo "################   Build boost   ################"
-./build-scripts/build-boost.sh
+#./build-scripts/build-boost.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -104,7 +104,7 @@ fi
 export LIBS="$LIBS -lboost_system -lboost_filesystem"
 
 echo "################   Build OpenCV   ################"
-./build-scripts/build-opencv.sh
+#./build-scripts/build-opencv.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -114,7 +114,7 @@ fi
 export LIBS="$LIBS -lopencv_core -lopencv_highgui -lopencv_imgproc"
 
 echo "################   Build gflags   ################"
-./build-scripts/build-gflags.sh
+#./build-scripts/build-gflags.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -124,7 +124,7 @@ fi
 export LIBS="$LIBS -lgflags"
 
 echo "################   Build glog   ################"
-./build-scripts/build-glog.sh
+#./build-scripts/build-glog.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
@@ -134,7 +134,7 @@ fi
 export LIBS="$LIBS -lglog"
 
 echo "################   Build protobuf   ################"
-./build-scripts/build-protobuf.sh
+#./build-scripts/build-protobuf.sh
 EXITSTATUS=$?
 if [ $EXITSTATUS != 0 ]
 then
