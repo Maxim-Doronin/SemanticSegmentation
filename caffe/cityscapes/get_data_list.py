@@ -2,7 +2,13 @@ import os
 
 data_path = os.path.join('..', '..', 'data')
 for split in ['train', 'val']:
+  print(split)
   img_train_path = os.path.join(data_path, 'leftImg8bit', split)
+
+  for dp, dn, filenames in os.walk(img_train_path):
+    for f in filenames: 
+      if f.endswith('.png'):
+        print os.path.relpath(os.path.join(dp, f), start=data_path)
 
   img_train_list = [os.path.relpath(os.path.join(dp, f), start=data_path)
                     for dp, dn, filenames in os.walk(img_train_path)
@@ -10,6 +16,12 @@ for split in ['train', 'val']:
   img_train_list.sort()
 
   label_train_path = os.path.join(data_path, 'gtFine', split)
+
+  for dp, dn, filenames in os.walk(label_train_path):
+    for f in filenames: 
+      if f.endswith('labelIds.png'):
+        print os.path.relpath(os.path.join(dp, f), start=data_path)
+
 
   label_train_list = [os.path.relpath(os.path.join(dp, f), start=data_path)
                     for dp, dn, filenames in os.walk(label_train_path)
