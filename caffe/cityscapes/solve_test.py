@@ -49,48 +49,53 @@ except:
     pass
 
 
-weights = '../cityscapes_iter_25000.caffemodel'
+weights = '../cityscapes_iter_12000.caffemodel'
 caffe.set_mode_gpu()
 net = caffe.Net('test.prototxt', caffe.TEST)
 net.copy_from(weights)
 
-img = caffe.io.load_image('jena.png')
-img = caffe.io.resize( img, (512 , 512 , 3) )
-transposed_img = img.transpose((2,0,1))[::-1,:,:]
-net.blobs['data'].data[...] = transposed_img
-net.forward()
+for sample_i in range(8):
+  img = caffe.io.load_image('jena.png')#os.path.join('samples', 'sample' + str(sample_i) + '.png'))
+  img = caffe.io.resize( img, (454 , 454 , 3) )
+  transposed_img = img.transpose((2,0,1))[::-1,:,:]
+  net.blobs['data'].data[...] = transposed_img
+  net.forward()
 
-result = net.blobs['softmax'].data[0]
-result *= 255
-newresult = np.array(result, dtype=np.uint8)
-newresult2 = np.array(result, dtype=np.uint8)
-for i in range(512):
-  for j in range(512):
-    m = 0
-    idx = 0
-    a = []
-    for k in range(30):
-      a.append(result[k][i][j])
-      if result[k][i][j] > m:
-        m = result[k][i][j]
-        idx = k
-    newresult2[0][i][j] = idx
-    newresult2[1][i][j] = m
+  result = net.blobs['softmax'].data[0]
+  result *= 255
+  newresult = np.array(result, dtype=np.uint8)
+  newresult2 = np.array(result, dtype=np.uint8)
+  for i in range(454):
+    for j in range(454):
+      m = 0
+      idx = 0
+      a = []
+      for k in range(30):
+        a.append(result[k][i][j])
+        if result[k][i][j] > m:
+          m = result[k][i][j]
+          idx = k
+      newresult2[0][i][j] = idx
+      newresult2[1][i][j] = m
   
-img = newresult2[0]
-color_img = Image.new('RGB', (512,512))
-for i in range(512):
-  for j in range(512):
-    color_img.putpixel((i,j),colors.get(img[i][j]))
+  img = newresult2[0]
 
-newresult2 *= 7
-j = Image.fromarray(newresult2[0])
-j.save('jena______' + str(0) + '_.png', "png")
-color_img.save('jena_color.png', "png")
+  color_img = Image.new('RGB', (454,454))
+  for i in range(454):
+    for j in range(454):
+      color_img.putpixel((j,i), colors.get(img[i][j]))
 
+  color_img.save('sample' + str(sample_i) + '_color.png', "png")
+
+  img *= 7
+  j = Image.fromarray(img)
+  j.save('sample' + str(sample_i) + '_gray.png', "png")
+
+'''
 result = net.blobs['softmax'].data[0]
 result *= 255
 newresult = np.array(result, dtype=np.uint8)
 for i in range(30):
   j = Image.fromarray(newresult[i])
   j.save('jena' + str(i) + '_.png', "png")
+'''

@@ -93,7 +93,7 @@ class CityscapesDataLayer(caffe.Layer):
     def load_image(self, idx):
         im = Image.open(os.path.join(self.root_folder, self.txtlines[idx].split(' ')[0]))
         in_ = np.array(im, dtype=np.float32)
-        in_/=255
+        in_ /= 255
         if len(in_.shape) == 2:
             in_ = in_[np.newaxis,...]
         else:

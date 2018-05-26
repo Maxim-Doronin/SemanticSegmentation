@@ -13,7 +13,7 @@ except:
     pass
 
 
-weights = '../cityscapes_iter_25000.caffemodel'
+weights = '../cityscapes_iter_10000.caffemodel'
 
 caffe.set_mode_gpu()
 
@@ -29,4 +29,4 @@ val = np.loadtxt('eval_list/val.txt', dtype=str)
 
 for _ in range(50):
     solver.step(4000)
-    score.seg_tests(solver, False, val, layer='score')
+    #score.seg_tests(solver, False, val, layer='score')

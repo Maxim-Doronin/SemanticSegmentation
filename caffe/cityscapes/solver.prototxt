@@ -3,17 +3,17 @@ test_net: "val.prototxt"
 
 test_iter: 500
 # make test net, but don't invoke it from the solver itself
-test_interval: 1000
+test_interval: 9999999
 display: 5
 average_loss: 20
 
-base_lr: 1e-4
+base_lr: 1e-9
 lr_policy: "step"
 gamma: 0.1
 stepsize: 4000
 
 # high momentum
-momentum: 0.9
+momentum: 0.99
 # no gradient accumulation
 iter_size: 1
 max_iter: 100000
