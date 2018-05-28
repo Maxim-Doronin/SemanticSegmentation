@@ -11,7 +11,7 @@ from matplotlib.colors import cnames
 colors = {
   0: (0, 0, 0),
   1: (255, 0, 0),
-  2: (240, 140, 140),
+  2: (0, 0, 0),
   3: (255, 120, 0),
   4: (240, 201, 166),
   5: (255, 255, 0),
@@ -22,11 +22,11 @@ colors = {
   10: (77, 233, 143),
   11: (107, 147, 124),
   12: (12, 98, 48),
-  13: (0, 255, 228),
+  13: (128, 64, 128),
   14: (58, 102, 97),
-  15: (0, 180, 255),
+  15: (244, 35, 232),
   16: (108, 124, 131),
-  17: (6, 74, 102),
+  17: (70, 70, 70),
   18: (0, 60, 255),
   19: (18, 40, 111),
   20: (199, 195, 249),
@@ -35,11 +35,15 @@ colors = {
   23: (234, 0, 255),
   24: (150, 8, 163),
   25: (240, 158, 247),
-  26: (247, 158, 217),
+  26: (107, 142, 35),
   27: (225, 7, 151),
   28: (143, 36, 106),
-  29: (145, 63, 86),
-  30: (187, 187, 187)
+  29: (70, 130, 180),
+  30: (187, 187, 187),
+  31: (0, 0, 0),
+  32: (0, 0, 142),
+  33: (100, 100, 100),
+  34: (250, 250, 250)
 }
 
 try:
@@ -49,15 +53,16 @@ except:
     pass
 
 
-weights = '../cityscapes_iter_12000.caffemodel'
+weights = '../segnet_iter_20000.caffemodel'
 caffe.set_mode_gpu()
 net = caffe.Net('test.prototxt', caffe.TEST)
 net.copy_from(weights)
 
 for sample_i in range(8):
-  img = caffe.io.load_image('jena.png')#os.path.join('samples', 'sample' + str(sample_i) + '.png'))
-  img = caffe.io.resize( img, (454 , 454 , 3) )
+  img = caffe.io.load_image(os.path.join('samples', 'sample' + str(sample_i) + '.png'))
+  img = caffe.io.resize( img, (360 , 480 , 3) )
   transposed_img = img.transpose((2,0,1))[::-1,:,:]
+  transposed_img *= 255
   net.blobs['data'].data[...] = transposed_img
   net.forward()
 
@@ -65,8 +70,8 @@ for sample_i in range(8):
   result *= 255
   newresult = np.array(result, dtype=np.uint8)
   newresult2 = np.array(result, dtype=np.uint8)
-  for i in range(454):
-    for j in range(454):
+  for i in range(360):
+    for j in range(480):
       m = 0
       idx = 0
       a = []
@@ -80,9 +85,9 @@ for sample_i in range(8):
   
   img = newresult2[0]
 
-  color_img = Image.new('RGB', (454,454))
-  for i in range(454):
-    for j in range(454):
+  color_img = Image.new('RGB', (480,360))
+  for i in range(360):
+    for j in range(480):
       color_img.putpixel((j,i), colors.get(img[i][j]))
 
   color_img.save('sample' + str(sample_i) + '_color.png', "png")
