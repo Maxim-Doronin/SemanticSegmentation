@@ -4,10 +4,10 @@ test_net: "val.prototxt"
 test_iter: 500
 # make test net, but don't invoke it from the solver itself
 test_interval: 9999999
-display: 5
+display: 20
 average_loss: 20
 
-base_lr: 1e-9
+base_lr: 1e-7
 lr_policy: "step"
 gamma: 0.1
 stepsize: 4000
@@ -21,5 +21,5 @@ weight_decay: 0.0005
 snapshot: 1000
 snapshot_prefix: "/home/deeplearning/studdocs/doronin_m/SemanticSegmentation/caffe/cityscapes"
 solver_mode: GPU
-#test_initialization: false
+test_initialization: false
 #debug_info: true

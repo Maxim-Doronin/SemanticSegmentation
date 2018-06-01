@@ -12,14 +12,8 @@ class CityscapesDataLayer(caffe.Layer):
 
         param = eval(self.param_str)
         self.split = param['split']
-        # source txt folder
         self.source = param['source']
-        # root folder
-        if 'root_folder' in param.keys():
-            self.root_folder = param['root_folder']
-        else:
-            self.root_folder = ''
-        #batch size
+        self.root_folder = param['root_folder']
         self.batch_size = param['batch_size']
         #shuffle each epoch
         if 'shuffle' in param.keys():
@@ -31,11 +25,6 @@ class CityscapesDataLayer(caffe.Layer):
             self.mean_value = param['mean_value']
         else:
             self.mean_value = ()
-        #scale
-        if 'scale' in param.keys():
-            self.scale = param['scale']
-        else:
-            self.scale = ()
         #new height
         if 'new_height' in param.keys():
             self.new_height = param['new_height']
@@ -67,7 +56,6 @@ class CityscapesDataLayer(caffe.Layer):
     def reshape(self,bottom,top):
         self.load()
         self.transform()
-        #self.label[self.label>0] = 1
         top[0].reshape(*self.data.shape)
         top[1].reshape(*self.label.shape)
 
@@ -93,7 +81,6 @@ class CityscapesDataLayer(caffe.Layer):
     def load_image(self, idx):
         im = Image.open(os.path.join(self.root_folder, self.txtlines[idx].split(' ')[0]))
         in_ = np.array(im, dtype=np.float32)
-        in_ /= 255
         if len(in_.shape) == 2:
             in_ = in_[np.newaxis,...]
         else:
@@ -126,8 +113,10 @@ class CityscapesDataLayer(caffe.Layer):
                     random.shuffle(self.txtlines)
 
     def transform(self):
-        self.data = np.zeros((self.batch_size, self.img_shape[2], self.img_shape[0], self.img_shape[1]), dtype=np.float32)
-        self.label = np.zeros((self.batch_size, 1, self.img_shape[0], self.img_shape[1]), dtype=np.uint8)
+        self.data = np.zeros((self.batch_size, self.img_shape[2], self.img_shape[0], 
+                              self.img_shape[1]), dtype=np.float32)
+        self.label = np.zeros((self.batch_size, 1, self.img_shape[0], 
+                               self.img_shape[1]), dtype=np.uint8)
         #resize
         if (self.new_height > 0) or (self.new_width > 0):
             rs_height = self.data.shape[2]
@@ -138,17 +127,17 @@ class CityscapesDataLayer(caffe.Layer):
             if self.new_width > 0:
                 rs_width  = self.new_width
             
-            #new_data = np.zeros(self.data.shape[0],self.data.shape[1],rs_height,rs_width)
-            #new_label = np.zeros(self.label.shape[0],self.label.shape[1],rs_height,rs_width)
             for i in range(self.batch_size):
-                new_data = cv2.resize(self.data_buf[i].transpose((1,2,0)),(rs_width,rs_height),interpolation = cv2.INTER_NEAREST)
+                new_data = cv2.resize(self.data_buf[i].transpose((1,2,0)),(rs_width,rs_height),
+                                      interpolation = cv2.INTER_NEAREST)
                 if len(new_data.shape) == 2:
                     new_data = new_data[np.newaxis,...]
                 else:
                     new_data = new_data.transpose((2,0,1))
                 self.data_buf[i] = new_data
                 
-                new_label = cv2.resize(self.label_buf[i].transpose((1,2,0)),(rs_width,rs_height),interpolation = cv2.INTER_NEAREST)
+                new_label = cv2.resize(self.label_buf[i].transpose((1,2,0)),(rs_width,rs_height),
+                                       interpolation = cv2.INTER_NEAREST)
                 if len(new_label.shape) == 2:
                     new_label = new_label[np.newaxis,...]
                 else:
@@ -161,26 +150,16 @@ class CityscapesDataLayer(caffe.Layer):
         #sub mean
         if len(self.mean_value)>0:
             if len(self.mean_value) != self.data.shape[1]:
-                print
-                print '*********************************************************'
-                print '*****Mean value numbers mismatch with data channels!*****'
-                print '*********************************************************'
-                print
-                sys.exit(0)
+                sys.exit(1)
             for i in range(self.data.shape[1]):
                 self.data[:,i,:,:] = self.data[:,i,:,:] - self.mean_value[i]
         #mul scale
         if len(self.scale)>0:
             if len(self.scale) != self.data.shape[1]:
-                print
-                print '*********************************************************'
-                print '********Scale numbers mismatch with data channels********'
-                print '*********************************************************'
-                print
-                sys.exit(0)
+                sys.exit(2)
             for i in range(self.data.shape[1]):
                 self.data[:,i,:,:] = self.data[:,i,:,:] * self.scale[i]
         #mirror
-        if self.mirror and random.random()>0.5:
+        if self.mirror and random.random() > 0.5:
             self.data = self.data[:,:,:,::-1]
             self.label = self.label[:,:,:,::-1]

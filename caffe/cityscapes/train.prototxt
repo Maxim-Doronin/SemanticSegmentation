@@ -6,7 +6,7 @@ layer {
   python_param {
     module: "cityscapes_data_layer2"
     layer: "CityscapesDataLayer"
-    param_str: "{\'root_folder\': \'../../data\', \'suffle\': True, \'batch_size\': 1, \'source\': \'eval_list\', \'seed\': 1337, \'split\': \'train\', \'mirror\': True, \'new_width\': 454, \'new_height\': 454}"
+    param_str: "{\'mean_value\': (73.1583, 82.9089, 72.3923), \'root_folder\': \'../../data\', \'suffle\': True, \'batch_size\': 1, \'source\': \'eval_list\', \'seed\': 1337, \'split\': \'train\', \'mirror\': True, \'new_width\': 454, \'new_height\': 454}"
   }
 }
 layer {
@@ -576,7 +576,7 @@ layer {
     decay_mult: 0.0
   }
   convolution_param {
-    num_output: 30
+    num_output: 34
     pad: 0
     kernel_size: 1
     weight_filler {
@@ -596,7 +596,7 @@ layer {
     lr_mult: 0.0
   }
   convolution_param {
-    num_output: 30
+    num_output: 34
     bias_term: false
     kernel_size: 4
     stride: 2
@@ -622,7 +622,7 @@ layer {
     decay_mult: 0.0
   }
   convolution_param {
-    num_output: 30
+    num_output: 34
     pad: 0
     kernel_size: 1
     weight_filler {
@@ -663,7 +663,7 @@ layer {
     lr_mult: 0.0
   }
   convolution_param {
-    num_output: 30
+    num_output: 34
     bias_term: false
     kernel_size: 4
     stride: 2
@@ -689,7 +689,7 @@ layer {
     decay_mult: 0.0
   }
   convolution_param {
-    num_output: 30
+    num_output: 34
     pad: 0
     kernel_size: 1
     weight_filler {
@@ -730,7 +730,7 @@ layer {
     lr_mult: 0.0
   }
   convolution_param {
-    num_output: 30
+    num_output: 34
     bias_term: false
     kernel_size: 16
     stride: 8
