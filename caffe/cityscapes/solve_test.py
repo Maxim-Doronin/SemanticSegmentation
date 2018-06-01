@@ -53,14 +53,14 @@ except:
     pass
 
 
-weights = '../segnet_iter_20000.caffemodel'
+weights = '../pspnet_iter_1000.caffemodel'
 caffe.set_mode_gpu()
 net = caffe.Net('test.prototxt', caffe.TEST)
 net.copy_from(weights)
 
 for sample_i in range(8):
   img = caffe.io.load_image(os.path.join('samples', 'sample' + str(sample_i) + '.png'))
-  img = caffe.io.resize( img, (360 , 480 , 3) )
+  img = caffe.io.resize( img, (235 , 235 , 3) )
   transposed_img = img.transpose((2,0,1))[::-1,:,:]
   transposed_img *= 255
   net.blobs['data'].data[...] = transposed_img
@@ -70,8 +70,8 @@ for sample_i in range(8):
   result *= 255
   newresult = np.array(result, dtype=np.uint8)
   newresult2 = np.array(result, dtype=np.uint8)
-  for i in range(360):
-    for j in range(480):
+  for i in range(235):
+    for j in range(235):
       m = 0
       idx = 0
       a = []
@@ -85,9 +85,9 @@ for sample_i in range(8):
   
   img = newresult2[0]
 
-  color_img = Image.new('RGB', (480,360))
-  for i in range(360):
-    for j in range(480):
+  color_img = Image.new('RGB', (235,235))
+  for i in range(235):
+    for j in range(235):
       color_img.putpixel((j,i), colors.get(img[i][j]))
 
   color_img.save('sample' + str(sample_i) + '_color.png', "png")
